@@ -1,6 +1,6 @@
 package ado;
 
-import service.ExchangeRate;
+import Entity.ExchangeRate;
 import utils.JsonReader;
 
 import javax.persistence.EntityManager;
@@ -9,24 +9,24 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class ExchangeRateAdoImpl implements  ExchangeRateAdo {
-private  EntityManagerFactory emf;
-private EntityManager entityManager;
+
    private JsonReader js = new JsonReader();
     public ExchangeRateAdoImpl() {
-        emf = Persistence.createEntityManagerFactory("exchange");
-        entityManager = emf.createEntityManager();
+
 
     }
 
     @Override
     public boolean addDataToBD(List<ExchangeRate> list) {
 
-
-        EntityTransaction tr = entityManager.getTransaction();
+       EntityManagerFactory emf = Persistence.createEntityManagerFactory("bank");
+       EntityManager entityManager = emf.createEntityManager();
+       EntityTransaction tr = entityManager.getTransaction();
 
 
         try {
@@ -54,12 +54,22 @@ private EntityManager entityManager;
     @Override
     public ExchangeRate getRateByDate(String data) {
 
+
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("bank");
+        EntityManager entityManager = emf.createEntityManager();
+
         ExchangeRate ex = new ExchangeRate();
+try {
 
 
-        ex = (ExchangeRate) entityManager.createQuery("Select e From ExchangeRate e where e.date='"+data+"'").getSingleResult();
+    ex = (ExchangeRate) entityManager.createQuery("Select e From ExchangeRate e where e.date='" + data + "'").getSingleResult();
 
-
+}finally {
+    if(entityManager!=null)
+        entityManager.close();
+    if(emf!=null)
+        emf.close();
+}
         return ex;
 
     }
@@ -69,29 +79,37 @@ private EntityManager entityManager;
     @Override
     public List<ExchangeRate> getAllDate() {
 
-      List<ExchangeRate> res = entityManager.createQuery("Select e From ExchangeRate e order by e.idRate asc ").getResultList();
 
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("bank");
+        EntityManager entityManager = emf.createEntityManager();
+        List<ExchangeRate> res = new ArrayList<>();
+        try {
+              res = entityManager.createQuery("Select e From ExchangeRate e order by e.idRate asc ").getResultList();
+        }finally {
+
+            if(entityManager!=null)
+                entityManager.close();
+            if(emf!=null)
+                emf.close();
+
+        }
         return res;
     }
 
     @Override
     public boolean updateData() {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("exchange");
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("bank");
        EntityManager entity = emf.createEntityManager();
         List<ExchangeRate> oldList = getAllDate();
         String lastDate = oldList.get(oldList.size()-1).getDate();
         System.out.println(lastDate);
-
         SimpleDateFormat sdf = new SimpleDateFormat("dd.mm.YYYY");
-
                 Date date = new Date();
         String dateNow = sdf.format(date);
 
         if (lastDate.equals(dateNow)){
             return true;
         }else {
-
-
             List<ExchangeRate> list = null;
             try {
                 list = js.parseJson(lastDate);
@@ -102,10 +120,7 @@ private EntityManager entityManager;
 
             EntityTransaction tr = entity.getTransaction();
 
-
             try {
-
-
                 for (int i = 0; i < list.size(); i++) {
                     tr.begin();
                     entity.merge(list.get(i));

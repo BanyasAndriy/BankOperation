@@ -1,8 +1,7 @@
 package servlets;
 
 import ado.ExchangeRateAdo;
-import ado.ExchangeRateAdoImpl;
-import service.ExchangeRate;
+import adoImp.ExchangeRateAdoImpl;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -12,16 +11,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
 
-@WebServlet(name ="/exchangeRateByDate")
-public class DateServlet extends HttpServlet {
+@WebServlet(name ="/avg")
+public class AvgServlet extends HttpServlet {
 
 
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        RequestDispatcher dispatcher = request.getRequestDispatcher("exchangeRateByDate.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("avgData.jsp");
         dispatcher.forward(request, response);
 
     }
@@ -33,30 +30,33 @@ public class DateServlet extends HttpServlet {
         response.setContentType("text/html;charset=utf-8");
 
         PrintWriter pw = response.getWriter();
-        String date;
+        String startDate="19.01.2019";
+        String endDate = "18.01.2020";
+        startDate = request.getParameter("startDate");
+        endDate = request.getParameter("endDate");
 
-        date = request.getParameter("date");
-
-
-        if (date==null){
-            date="15.01.2020";
+        if (startDate==null){
+            startDate="19.01.2019";
+        }
+        if (endDate==null){
+            endDate="18.01.2020";
         }
 
 
 
-        ExchangeRateAdo ado = new ExchangeRateAdoImpl();
-        ExchangeRate exchangeRate = ado.getRateByDate(date);
-        List<ExchangeRate> list = new ArrayList<>();
-        list.add(exchangeRate);
-
-        request.setAttribute("list", list);
+        double avg=0.0;
+ExchangeRateAdo ado= new ExchangeRateAdoImpl();
+       //  avg = ado.avgExchangeRate(startDate,endDate);
 
 
+        request.setAttribute("avg", avg);
 
 
 
 
-        RequestDispatcher dispatcher = request.getRequestDispatcher("exchangeRateByDate.jsp");
+
+
+        RequestDispatcher dispatcher = request.getRequestDispatcher("avgData.jsp");
         dispatcher.forward(request, response);
 
 
