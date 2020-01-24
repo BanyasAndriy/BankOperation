@@ -1,8 +1,7 @@
 package servlets;
 
-import ado.ExchangeRateAdo;
-import adoImp.ExchangeRateAdoImpl;
-import Entity.ExchangeRate;
+import ado.AccountAdo;
+import adoImp.AccountImpl;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -11,17 +10,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
 
-@WebServlet(name ="/exchangeRateByDate")
-public class DateServlet extends HttpServlet {
+@WebServlet(name ="sendMoneyToAnotherCard")
+public class SendMoneyServlet extends HttpServlet {
 
-
+AccountAdo ado = new AccountImpl();
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        RequestDispatcher dispatcher = request.getRequestDispatcher("exchangeRateByDate.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("sendMoney.jsp");
         dispatcher.forward(request, response);
 
     }
@@ -32,31 +28,21 @@ public class DateServlet extends HttpServlet {
 
         response.setContentType("text/html;charset=utf-8");
 
-        PrintWriter pw = response.getWriter();
-        String date;
+ String yourCard = request.getParameter("yourCard");
+ String anotherCard=request.getParameter("anotherCard");
+ double amount =Double.parseDouble( request.getParameter("amount"));
+ String currency = request.getParameter("currency");
 
-        date = request.getParameter("date");
+if (ado.sendMoneyToAnotherCard(yourCard,anotherCard,currency,amount)){
+    request.setAttribute("s","Операція пройшла успішно!!!");
+}else {
+    request.setAttribute("s","Помилка при виконанні операці!!!Повторіть операцію!!!");
 
-
-        if (date==null){
-            date="15.01.2020";
-        }
-
-
-
-        ExchangeRateAdo ado = new ExchangeRateAdoImpl();
-        ExchangeRate exchangeRate = ado.getRateByDate(date);
-        List<ExchangeRate> list = new ArrayList<>();
-        list.add(exchangeRate);
-
-        request.setAttribute("list", list);
+}
 
 
 
-
-
-
-        RequestDispatcher dispatcher = request.getRequestDispatcher("exchangeRateByDate.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("sendMoney.jsp");
         dispatcher.forward(request, response);
 
 

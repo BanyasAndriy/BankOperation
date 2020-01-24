@@ -1,7 +1,4 @@
-package service;
-
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+package Entity;
 
 import javax.persistence.*;
 
@@ -13,16 +10,46 @@ public class ExchangeRate {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="idExchangeRate")
     Integer idRate;
 
+
+        @Transient
         private String date;
+        @Transient
         private String baseCurrency;
+        @Transient
         private Double saleRateNB;
+        @Transient
         private Double purchaseRateNB;
+        @Transient
         private String currency;
+        @Transient
         private Double saleRate;
+        @Transient
         private Double purchaseRate;
 
+
+        @Column(name = "usd")
+        private  String usd;
+        @Column (name = "eur")
+        private  String eur;
+
+    public String getUsd() {
+        return usd;
+    }
+
+    public void setUsd(String usd) {
+        this.usd = usd;
+    }
+
+    public String getEur() {
+        return eur;
+    }
+
+    public void setEur(String eur) {
+        this.eur = eur;
+    }
 
     public ExchangeRate() {
     }
@@ -124,13 +151,8 @@ public class ExchangeRate {
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("ExchangeRate{");
-        sb.append(" date='").append(date).append('\'');
-        sb.append(", baseCurrency='").append(baseCurrency).append('\'');
-        sb.append(", saleRateNB=").append(saleRateNB);
-        sb.append(", purchaseRateNB=").append(purchaseRateNB);
-        sb.append(", currency='").append(currency).append('\'');
-        sb.append(", saleRate=").append(saleRate);
-        sb.append(", purchaseRate=").append(purchaseRate);
+        sb.append("usd='").append(usd).append('\'');
+        sb.append(", eur='").append(eur).append('\'');
         sb.append('}');
         return sb.toString();
     }

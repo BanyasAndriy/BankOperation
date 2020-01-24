@@ -6,34 +6,78 @@
          version="4.0">
 
   <servlet>
-    <servlet-name>ShowAllDate</servlet-name>
-    <servlet-class>servlets.MainServlet</servlet-class>
+    <servlet-name>AddMoney</servlet-name>
+    <servlet-class>servlets.AddMoneyServlet</servlet-class>
   </servlet>
 
   <servlet-mapping>
-    <servlet-name>ShowAllDate</servlet-name>
-    <url-pattern>/table</url-pattern>
+    <servlet-name>AddMoney</servlet-name>
+    <url-pattern>/addMoneyToCard</url-pattern>
   </servlet-mapping>
 
 
   <servlet>
-    <servlet-name>ShowExchangeRateByDate</servlet-name>
-    <servlet-class>servlets.DateServlet</servlet-class>
+    <servlet-name>SendMoneyServlet</servlet-name>
+    <servlet-class>servlets.SendMoneyServlet</servlet-class>
   </servlet>
 
   <servlet-mapping>
-    <servlet-name>ShowExchangeRateByDate</servlet-name>
-    <url-pattern>/exchangeRateByDate</url-pattern>
+    <servlet-name>SendMoneyServlet</servlet-name>
+    <url-pattern>/sendMoneyToAnotherCard</url-pattern>
+  </servlet-mapping>
+
+
+
+  <servlet>
+    <servlet-name>UserAccount</servlet-name>
+    <servlet-class>servlets.UserAccount</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>UserAccount</servlet-name>
+    <url-pattern>/addUserAccount</url-pattern>
   </servlet-mapping>
 
   <servlet>
-    <servlet-name>AvgServlet</servlet-name>
-    <servlet-class>servlets.AvgServlet</servlet-class>
+    <servlet-name>ConvertMoneyServlet</servlet-name>
+    <servlet-class>servlets.ConvertMoneyServlet</servlet-class>
   </servlet>
 
   <servlet-mapping>
-    <servlet-name>AvgServlet</servlet-name>
-    <url-pattern>/avg</url-pattern>
+    <servlet-name>ConvertMoneyServlet</servlet-name>
+    <url-pattern>/convertMoney</url-pattern>
+  </servlet-mapping>
+
+
+  <servlet>
+    <servlet-name>SumAllMoneyServlet</servlet-name>
+    <servlet-class>servlets.SumAllMoneyServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>SumAllMoneyServlet</servlet-name>
+    <url-pattern>/sumAllMoney</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>informationAboutUserServlet</servlet-name>
+    <servlet-class>servlets.InformationAboutUserServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>informationAboutUserServlet</servlet-name>
+    <url-pattern>/informationAboutUserServlet</url-pattern>
+  </servlet-mapping>
+
+
+  <servlet>
+    <servlet-name>usersTransaction</servlet-name>
+    <servlet-class>servlets.UsersTransactionServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>usersTransaction</servlet-name>
+    <url-pattern>/transaction</url-pattern>
   </servlet-mapping>
 
 
